@@ -1,0 +1,199 @@
+<!-- Main Body -->
+<amexio-drop-down-menu
+  [icon-align]="'left'"
+  [title]="'Actions'"
+  [icon]="'fa fa-slack'">
+
+    <amexio-drop-down-menu-item
+      [icon-align]="'right'"
+      [label-align]="'left'"
+      [label]="'Add Record'"
+      [icon]="'fa fa-vk'"
+      [separator]="false"
+      (click)="openModal('addModal')">
+    </amexio-drop-down-menu-item>
+
+    <amexio-drop-down-menu-item
+      [icon-align]="'right'"
+      [label-align]="'left'"
+      [label]="'Delete Record'"
+      [icon]="'fa fa-vk'"
+      [separator]="false"
+      (click)="openModal('deleteModal')">
+    </amexio-drop-down-menu-item>
+
+    <amexio-drop-down-menu-item
+      [icon-align]="'right'"
+      [label-align]="'left'"
+      [label]="'Display Record'"
+      [icon]="'fa fa-vk'"
+      [separator]="false"
+      (click)="openModal('displayModal')">
+    </amexio-drop-down-menu-item>
+</amexio-drop-down-menu>
+
+<amexio-card>
+  <amexio-body>
+    <div style="text-align:center">
+      <h1>
+        Welcome to Chris Orthner's {{title}}!
+      </h1>
+    </div>
+    <div style="text-align:center">
+      Number of Adds: {{ appService.addCount }}
+    </div>
+    <div style="text-align:center">
+      Number of Deletes : {{ appService.deleteCount }}
+    </div>
+    <div style="text-align:center">
+      Average records added per hour : {{ appService.addsPerHour }}
+    </div>
+    <div style="text-align:center">
+      Average records deleted per hour : {{ appService.deletesPerHour }}
+    </div>
+    <div style="text-align:center">
+      Ratio of adds per hour over deletes per hour : {{ appService.ratioAddsOverDeletesPerHour }}
+    </div>
+  </amexio-body>
+</amexio-card>
+
+<div id="displayInfo2" class="hideUnhide">
+  <amexio-card>
+      <amexio-body>
+        <div style="text-align:center">
+          Id: {{ displayId }}
+        </div>
+        <div style="text-align:center">
+          Name: {{ displayName }}
+        </div>
+        <div style="text-align:center">
+          Phone Number: {{ displayNumber }}
+        </div>
+      </amexio-body>
+  </amexio-card>
+</div>
+
+
+<!-- Add modal -->
+<div id="addModal" class="modal">
+  <div class="modal-content">
+    <amexio-form [header]="true"
+       [header-align]="'right'"
+       [footer-align]="'right'"
+       [form-name]="'addForm'"
+       [show-error]="true">
+        <amexio-form-header>
+          Add Record
+        </amexio-form-header>
+        <amexio-form-body>
+          <amexio-text-input field-label="Name" name="personName" place-holder="Enter name" icon-feedback="true"
+            [(ngModel)]="inputName"></amexio-text-input>
+          <amexio-number-input field-label="Phone Number" name="phoneNum" place-holder="Enter phone number" icon-feedback="true"
+            [(ngModel)]="inputNum"></amexio-number-input>
+        </amexio-form-body>
+        <amexio-form-action>
+          <amexio-button
+             [label]="'Add'"
+             [type]="'theme-color'"
+             [form-bind]="'addForm'"
+             [tooltip]="'toolTip'"
+             (click)="onAdd($event)"
+             id="addBtn">
+          </amexio-button>
+          <amexio-button
+            [label]="'Cancel'"
+            [type]="'theme-color'"
+            [tooltip]="'toolTip'"
+            (click)="onCloseModal('addModal')">
+         </amexio-button>
+        </amexio-form-action>
+    </amexio-form>
+  </div>
+</div>
+
+<!-- display modal -->
+<div id="displayModal" class="modal">
+  <div class="modal-content">
+    <amexio-form [header]="true"
+       [header-align]="'right'"
+       [footer-align]="'right'"
+       [form-name]="'addForm'"
+       [show-error]="false">
+        <amexio-form-header>
+          Display Record
+        </amexio-form-header>
+        <amexio-form-body>
+            <amexio-text-input field-label="Name" name="personName" place-holder="Enter name" icon-feedback="true"
+            [(ngModel)]="inputName"></amexio-text-input>
+          <amexio-number-input field-label="Phone Number" name="phoneNum" place-holder="Enter phone number" icon-feedback="true"
+            [(ngModel)]="inputNum"></amexio-number-input>
+        </amexio-form-body>
+        <amexio-form-action>
+          <amexio-button
+             [label]="'Display'"
+             [type]="'theme-color'"
+             [tooltip]="'toolTip'"
+             (click)="onDisplay($event)">
+          </amexio-button>
+          <amexio-button
+            [label]="'Close'"
+            [type]="'theme-color'"
+            [tooltip]="'toolTip'"
+            (click)="onCloseDisplayModal()">
+         </amexio-button>
+        </amexio-form-action>
+    </amexio-form>
+    <div id="displayInfo" class="hideUnhide">
+      <amexio-card>
+          <amexio-body>
+            <div style="text-align:center">
+              Id: {{ displayId }}
+            </div>
+            <div style="text-align:center">
+              Name: {{ displayName }}
+            </div>
+            <div style="text-align:center">
+              Phone Number: {{ displayNumber }}
+            </div>
+          </amexio-body>
+      </amexio-card>
+    </div>
+  </div>
+</div>
+
+
+<!-- delete modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <amexio-form [header]="true"
+         [header-align]="'right'"
+         [footer-align]="'right'"
+         [form-name]="'addForm'"
+         [show-error]="false">
+          <amexio-form-header>
+            Delete Record
+          </amexio-form-header>
+          <amexio-form-body>
+            <amexio-text-input field-label="Name" name="personName" place-holder="Enter name" icon-feedback="true"
+              [(ngModel)]="inputName"></amexio-text-input>
+            <amexio-number-input field-label="Phone Number" name="phoneNum" place-holder="Enter phone number" icon-feedback="true"
+              [(ngModel)]="inputNum"></amexio-number-input>
+          </amexio-form-body>
+          <amexio-form-action>
+            <amexio-button
+               [label]="'Delete'"
+               [type]="'theme-color'"
+               [tooltip]="'toolTip'"
+               (click)="onDelete($event)">
+            </amexio-button>
+            <amexio-button
+              [label]="'Cancel'"
+              [type]="'theme-color'"
+              [tooltip]="'toolTip'"
+              (click)="onCloseModal('deleteModal')">
+           </amexio-button>
+          </amexio-form-action>
+      </amexio-form>
+    </div>
+  </div>
+
